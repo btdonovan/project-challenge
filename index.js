@@ -19,6 +19,10 @@ let students = [
   }
 ]
 
+app.get('/students/:studentId', (req,res) => {
+  res.send(students.filter((student) => (student.id === Number(req.params.studentId)))[0])
+})
+
 app.get('/students', (req, res) => {
   if (req.query.search) {
     let search = req.query.search
@@ -29,12 +33,6 @@ app.get('/students', (req, res) => {
   } else {
     res.send(students)
   }
-})
-
-app.get('/student/:studentId', (req,res) => {
-  console.log(req.params); 
-  console.log(req.params.studentId);
-  res.send(students.filter((student) => (student.id === Number(req.params.studentId)))[0])
 })
 
 app.get('/grades/:studentId', (req, res) => {
