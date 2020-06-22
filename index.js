@@ -41,7 +41,7 @@ app.get('/grades/:studentId', (req, res) => {
   res.send(students.filter((student) => (student.id === Number(req.params.studentId)))[0].grades)
 })
 
-app.post('/grades/', (req, res) => {
+app.post('/grades', (req, res) => {
   let result;
   let newGrade = req.body
   if (newGrade.id && newGrade.grade) {
@@ -56,6 +56,36 @@ app.post('/grades/', (req, res) => {
       "message": "The grade was not recorded"
     }
     res.status(400);
+  }
+  res.json(result)
+})
+
+app.post('/register', (req, res) => {
+  let result;
+  let newStudent = req.body
+  if (newStudent.firstName && newStudent.lastName) {
+    let highestID = 0
+    for (let student of students) {
+      if (student.id > highestID) {
+        highestID = student.id
+      }
+    }
+    students.push({
+      id: highestID + 1,
+      firstName: newStudent.firstName,
+      lastName: newStudent.lastName,
+      grades: []
+    })
+    result = {
+      "status": "success",
+      "message": "The student was successfully added"
+    }
+  } else {
+    result = {
+      "status": "failed",
+      "message": "The student was not added"
+    }
+    res.status(400)
   }
   res.json(result)
 })
